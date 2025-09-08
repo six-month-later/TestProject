@@ -1,24 +1,17 @@
 from fastapi import FastAPI
-from fastapi.responses import FileResponse
-from pydantic import BaseModel
-
-app = FastAPI()
-
-# class Calc(BaseModel):
-
-#     num1: int
-#     num2: int
+from contextlib import asynccontextmanager
+from database import create_tables, delete_tables
+from router import router as tasks_router
 
 
-@app.get("/")
-async def into_file():
-    return FileResponse("public/index.html")
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    await create_tables()
+    print("База данных готова")
+    yield
+    await delete_tables()
+    print("База данных очищена")
 
-@app.get("/info")
-async def get_info():
-    return {"message": "Это мой первый проект FastAPI!"}
 
-@app.post("/calculate")
-async def calc(num1, num2):
-    sum = num1 + num2
-    return {"message": "Сумма " + num1 + " и " + num2 + " равна " + sum}
+app = FastAPI(lifespan=lifespan)
+app.include_router(tasks_router)
