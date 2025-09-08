@@ -33,7 +33,22 @@ async def get_tasks() -> list[STask]:
     tasks = await TaskRepository.get_tasks()
     return tasks
 
-@router.patch("")
-async def get_tasks_by_id() -> STask:
-    task = await TaskRepository.get_task_by_id()
+@router.get("")
+async def get_tasks_by_id(task_id: int) -> STask | None:
+    task = await TaskRepository.get_task_by_id(task_id)
     return task
+
+@router.patch("")
+async def update_task(task_id: int, task_data: STaskAdd) -> bool:
+    task = await TaskRepository.update_task(task_id, task_data)
+    return task
+
+@router.delete("")
+async def delete_task(task_id: int) -> STask:
+    task = await TaskRepository.delete_task(task_id)
+    return task
+
+@router.delete("")
+async def delete_all_task() -> STask:
+    tasks = await TaskRepository.delete_all_tasks()
+    return tasks
