@@ -1,4 +1,4 @@
-from sqlalchemy import select
+from sqlalchemy import select, delete, update
 from db.database import TaskOrm, new_session
 from schemas import STaskAdd, STask
 
@@ -22,3 +22,21 @@ class TaskRepository:
             task_models = result.scalars().all()
             tasks = [STask.model_validate(task_model) for task_model in task_models]
             return tasks
+        
+    @classmethod
+    async def get_task_by_id(cls, task_id: int) -> STask | None:
+        async with new_session() as session:
+            query = select(TaskOrm).where(TaskOrm.id == task_id)
+            result = await session.execute(query)
+            task_model = result.scalar_one_or_none()
+            if task_model:
+                return STask.model_validate(task_model)
+            return None
+    
+
+
+    # @classmethod
+    # async def delete_tasks(cls) -> STask | None:
+    #     async with new_session() as session:
+    #         query = delete(TaskOrm)
+    #         result = await session.

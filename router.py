@@ -32,3 +32,8 @@ async def add_task(task: STaskAdd = Depends()) -> STaskID:
 async def get_tasks() -> list[STask]:
     tasks = await TaskRepository.get_tasks()
     return tasks
+
+@router.patch("")
+async def get_tasks_by_id() -> STask:
+    task = await TaskRepository.get_task_by_id()
+    return task
