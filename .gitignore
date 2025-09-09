@@ -3,3 +3,4 @@ db/__pycache__
 venv
 tasks.db
 .vscode
+__init__.py
