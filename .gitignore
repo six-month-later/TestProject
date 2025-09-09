@@ -4,3 +4,5 @@ venv
 tasks.db
 .vscode
 __init__.py
+.env
+.pytest_cache
