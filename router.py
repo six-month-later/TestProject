@@ -58,3 +58,10 @@ async def delete_task(task_id: int) -> dict:
 async def delete_all_tasks() -> dict:
     deleted_count = await TaskRepository.delete_all_tasks()
     return {"success": True, "deleted_count": deleted_count}
+
+@router.post("/calculate")
+async def sum_two_numbers(nums: Calculator = Depends()):
+    first_number = int(nums.num1)
+    second_number = int(nums.num2)
+    result_sum = first_number + second_number
+    return {"result": result_sum}
