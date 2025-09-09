@@ -1,6 +1,6 @@
 from sqlalchemy import select, delete, update
-from db.database import TaskOrm, new_session
-from app.api.schemas.schemas import STaskAdd, STask
+from src.db.database import TaskOrm, new_session
+from src.api.schemas.schemas import STaskAdd, STask
 
 
 class TaskRepository:
