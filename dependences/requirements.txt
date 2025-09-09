@@ -51,3 +51,7 @@ uvicorn==0.35.0
 uvloop==0.21.0
 watchfiles==1.1.0
 websockets==15.0.1
+iniconfig==2.1.0 
+packaging==25.0 
+pluggy==1.6.0 
+pytest==8.4.2
