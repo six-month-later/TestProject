@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import FileResponse
-from app.repository import TaskRepository
-from app.models.schemas import STask, STaskAdd, STaskID, Calculator
+from app.db.repository import TaskRepository
+from app.api.schemas.schemas import STask, STaskAdd, STaskID, Calculator
 
 router = APIRouter(
     prefix="/tasks",
