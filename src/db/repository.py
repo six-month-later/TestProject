@@ -1,6 +1,7 @@
-from sqlalchemy import select, delete, update
+from sqlalchemy import delete, select, update
+
+from src.api.schemas.schemas import STask, STaskAdd
 from src.db.database import TaskOrm, new_session
-from src.api.schemas.schemas import STaskAdd, STask
 
 
 class TaskRepository:
@@ -13,7 +14,7 @@ class TaskRepository:
             await session.flush()
             await session.commit()
             return new_task.id
-    
+
     @classmethod
     async def get_tasks(cls) -> list[STask]:
         async with new_session() as session:
@@ -22,7 +23,7 @@ class TaskRepository:
             task_models = result.scalars().all()
             tasks = [STask.model_validate(task_model) for task_model in task_models]
             return tasks
-        
+
     @classmethod
     async def get_task_by_id(cls, task_id: int) -> STask | None:
         async with new_session() as session:
@@ -32,7 +33,7 @@ class TaskRepository:
             if task_model:
                 return STask.model_validate(task_model)
             return None
-    
+
     @classmethod
     async def update_task(cls, task_id: int, task_data: STaskAdd) -> bool:
         async with new_session() as session:
@@ -42,12 +43,8 @@ class TaskRepository:
 
             if not existing_task:
                 return False
-            
-            update_query = (
-                update(TaskOrm)
-                .where(TaskOrm.id == task_id)
-                .values(**task_data.model_dump())
-            )
+
+            update_query = update(TaskOrm).where(TaskOrm.id == task_id).values(**task_data.model_dump())
 
             await session.execute(update_query)
             await session.commit()
@@ -59,7 +56,7 @@ class TaskRepository:
             query = select(TaskOrm).where(TaskOrm.id == task_id)
             result = await session.execute(query)
             existing_task = result.scalar_one_or_none()
-            
+
             if not existing_task:
                 return False
 
