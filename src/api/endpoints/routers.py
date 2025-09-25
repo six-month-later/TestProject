@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import FileResponse
 
-from src.api.schemas.schemas import Calculator, STask, STaskAdd, STaskID
+from src.api.schemas.schemas import Calculator, STask, STaskAdd, STaskID, User
 from src.core.logger import logger
 from src.db.repository import TaskRepository
 
@@ -72,3 +72,20 @@ async def sum_two_numbers(nums: Calculator = Depends()):
     result_sum = first_number + second_number
     logger.info("Сумма посчитана успешно")
     return {"result": result_sum}
+
+
+User.name = "John Doe"
+User.age = 20
+
+
+@router.get("/users")
+async def users_info() -> User:
+    return User
+
+
+@router.post("/user")
+async def user_age(data: User):
+    if data.age >= 18:
+        return {User + "is_adult": True}
+    else:
+        return {User + "is_adult": False}
