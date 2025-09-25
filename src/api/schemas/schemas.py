@@ -18,3 +18,8 @@ class STask(STaskAdd):
 
 class STaskID(BaseModel):
     id: int
+
+
+class User(BaseModel):
+    name: str
+    age: int
